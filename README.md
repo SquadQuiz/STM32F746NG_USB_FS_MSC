@@ -11,4 +11,4 @@
     - CMake
     - Ninja
   - Drivers
-    - STM32 HAL F7xx
+    - STM32 HAL F7xx Drivers
