@@ -32,10 +32,28 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Src/sysmem.c
     ${PROJ_PATH}/Core/Src/system_stm32f7xx.c
     
-	# HAL Driver
-	${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
+    # HAL Driver
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c
     
-	# Startup
+    # BSP Drivers
+    ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c
+	
+    # Startup
     ${PROJ_PATH}/Core/Startup/startup_stm32f746nghx.s
 )
 
@@ -47,6 +65,7 @@ set(include_DIRS
     ${PROJ_PATH}/Drivers/CMSIS/Device/ST/STM32F7xx/Include
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy
+    ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/
 )
 
 # Include directories for each compiler
