@@ -10,15 +10,13 @@
 #define INC_MAIN_H_
 
 /* Includes ------------------------------------------------------------------*/
-// #include "stm32f7xx_hal.h"
+#include "stm32f7xx_hal.h"
+#include "stm32746g_discovery.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-#ifdef __cplusplus
-}
-#endif
+/* Exported types ------------------------------------------------------------*/
+/* Exported variables --------------------------------------------------------*/
+/* Exported constants --------------------------------------------------------*/
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions ------------------------------------------------------- */
 
 #endif /* INC_MAIN_H_ */
