@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * @file    usbd_msc_storage_template.c
+  * @file    USB_Device/MSC_Standalone/Src/usbd_storage.c
   * @author  MCD Application Team
   * @brief   Memory management layer
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2015 STMicroelectronics.
+  * Copyright (c) 2016 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -16,49 +16,22 @@
   ******************************************************************************
   */
 
-/* BSPDependencies
-- "stm32xxxxx_{eval}{discovery}{nucleo_144}.c"
-- "stm32xxxxx_{eval}{discovery}_io.c"
-- "stm32xxxxx_{eval}{discovery}{adafruit}_sd.c"
-EndBSPDependencies */
-
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_msc_storage.h"
-
+#include "stm32746g_discovery_sd.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define STORAGE_LUN_NBR                  1
+#define STORAGE_BLK_NBR                  0x10000
+#define STORAGE_BLK_SIZ                  0x200
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Extern function prototypes ------------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-
-#define STORAGE_LUN_NBR                  1U
-#define STORAGE_BLK_NBR                  0x10000U
-#define STORAGE_BLK_SIZ                  0x200U
-
-int8_t STORAGE_Init(uint8_t lun);
-
-int8_t STORAGE_GetCapacity(uint8_t lun, uint32_t *block_num,
-                           uint16_t *block_size);
-
-int8_t  STORAGE_IsReady(uint8_t lun);
-
-int8_t  STORAGE_IsWriteProtected(uint8_t lun);
-
-int8_t STORAGE_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr,
-                    uint16_t blk_len);
-
-int8_t STORAGE_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr,
-                     uint16_t blk_len);
-
-int8_t STORAGE_GetMaxLun(void);
+__IO uint32_t writestatus, readstatus = 0;
 
 /* USB Mass storage Standard Inquiry Data */
-int8_t  STORAGE_Inquirydata[] =  /* 36 */
-{
-
+int8_t STORAGE_Inquirydata[] = { /* 36 */
   /* LUN 0 */
   0x00,
   0x80,
@@ -68,14 +41,22 @@ int8_t  STORAGE_Inquirydata[] =  /* 36 */
   0x00,
   0x00,
   0x00,
-  'S', 'T', 'M', ' ', ' ', ' ', ' ', ' ', /* Manufacturer : 8 bytes */
-  'P', 'r', 'o', 'd', 'u', 'c', 't', ' ', /* Product      : 16 Bytes */
+  'S', 'T', 'M', ' ', ' ', ' ', ' ', ' ', /* Manufacturer: 8 bytes  */
+  'P', 'r', 'o', 'd', 'u', 'c', 't', ' ', /* Product     : 16 Bytes */
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  '0', '.', '0', '1',                     /* Version      : 4 Bytes */
+  '0', '.', '0', '1',                     /* Version     : 4 Bytes  */
 };
 
-USBD_StorageTypeDef USBD_MSC_Template_fops =
-{
+/* Private function prototypes -----------------------------------------------*/
+int8_t STORAGE_Init(uint8_t lun);
+int8_t STORAGE_GetCapacity(uint8_t lun, uint32_t *block_num, uint16_t *block_size);
+int8_t STORAGE_IsReady(uint8_t lun);
+int8_t STORAGE_IsWriteProtected(uint8_t lun);
+int8_t STORAGE_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
+int8_t STORAGE_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
+int8_t STORAGE_GetMaxLun(void);
+
+USBD_StorageTypeDef USBD_DISK_fops = {
   STORAGE_Init,
   STORAGE_GetCapacity,
   STORAGE_IsReady,
@@ -84,8 +65,8 @@ USBD_StorageTypeDef USBD_MSC_Template_fops =
   STORAGE_Write,
   STORAGE_GetMaxLun,
   STORAGE_Inquirydata,
-
 };
+/* Private functions ---------------------------------------------------------*/
 
 /**
   * @brief  Initializes the storage unit (medium)
@@ -94,9 +75,8 @@ USBD_StorageTypeDef USBD_MSC_Template_fops =
   */
 int8_t STORAGE_Init(uint8_t lun)
 {
-  UNUSED(lun);
-
-  return (0);
+  BSP_SD_Init();
+  return 0;
 }
 
 /**
@@ -108,24 +88,49 @@ int8_t STORAGE_Init(uint8_t lun)
   */
 int8_t STORAGE_GetCapacity(uint8_t lun, uint32_t *block_num, uint16_t *block_size)
 {
-  UNUSED(lun);
+  HAL_SD_CardInfoTypeDef info;
+  int8_t ret = -1;
 
-  *block_num  = STORAGE_BLK_NBR;
-  *block_size = STORAGE_BLK_SIZ;
-  return (0);
+  if(BSP_SD_IsDetected() != SD_NOT_PRESENT)
+  {
+    BSP_SD_GetCardInfo(&info);
+
+    *block_num = info.LogBlockNbr;
+    *block_size = info.LogBlockSize;
+    ret = 0;
+  }
+  return ret;
 }
-
 
 /**
   * @brief  Checks whether the medium is ready.
   * @param  lun: Logical unit number
   * @retval Status (0: OK / -1: Error)
   */
-int8_t  STORAGE_IsReady(uint8_t lun)
+int8_t STORAGE_IsReady(uint8_t lun)
 {
-  UNUSED(lun);
+  static int8_t prev_status = 0;
+  int8_t ret = -1;
 
-  return (0);
+  if(BSP_SD_IsDetected() != SD_NOT_PRESENT)
+  {
+    if(prev_status < 0)
+    {
+      BSP_SD_Init();
+      prev_status = 0;
+
+    }
+    if(BSP_SD_GetCardState() == SD_TRANSFER_OK)
+    {
+      ret = 0;
+    }
+  }
+  else if(prev_status == 0)
+  {
+    prev_status = -1;
+  }
+
+  return ret;
 }
 
 /**
@@ -133,49 +138,81 @@ int8_t  STORAGE_IsReady(uint8_t lun)
   * @param  lun: Logical unit number
   * @retval Status (0: write enabled / -1: otherwise)
   */
-int8_t  STORAGE_IsWriteProtected(uint8_t lun)
+int8_t STORAGE_IsWriteProtected(uint8_t lun)
 {
-  UNUSED(lun);
-
-  return  0;
+  return 0;
 }
 
 /**
   * @brief  Reads data from the medium.
   * @param  lun: Logical unit number
-  * @param  buf: data buffer
   * @param  blk_addr: Logical block address
   * @param  blk_len: Blocks number
   * @retval Status (0: OK / -1: Error)
   */
-int8_t STORAGE_Read(uint8_t lun, uint8_t *buf,
-                    uint32_t blk_addr, uint16_t blk_len)
+int8_t STORAGE_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
-  UNUSED(lun);
-  UNUSED(buf);
-  UNUSED(blk_addr);
-  UNUSED(blk_len);
+  int8_t ret = -1;
+  uint32_t timeout = 100000;
 
-  return 0;
+  if(BSP_SD_IsDetected() != SD_NOT_PRESENT)
+  {
+    BSP_SD_ReadBlocks_DMA((uint32_t *)buf, blk_addr, blk_len);
+
+    /* Wait for Rx Transfer completion */
+    while (readstatus == 0)
+    {
+    }
+    readstatus = 0;
+
+    /* Wait until SD card is ready to use for new operation */
+    while (BSP_SD_GetCardState() != SD_TRANSFER_OK)
+    {
+      if (timeout-- == 0)
+      {
+        return ret;
+      }
+    }
+
+    ret = 0;
+  }
+  return ret;
 }
 
 /**
   * @brief  Writes data into the medium.
   * @param  lun: Logical unit number
-  * @param  buf: data buffer
   * @param  blk_addr: Logical block address
   * @param  blk_len: Blocks number
   * @retval Status (0 : OK / -1 : Error)
   */
-int8_t STORAGE_Write(uint8_t lun, uint8_t *buf,
-                     uint32_t blk_addr, uint16_t blk_len)
+int8_t STORAGE_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
-  UNUSED(lun);
-  UNUSED(buf);
-  UNUSED(blk_addr);
-  UNUSED(blk_len);
+  int8_t ret = -1;
+  uint32_t timeout = 100000;
 
-  return (0);
+  if(BSP_SD_IsDetected() != SD_NOT_PRESENT)
+  {
+    BSP_SD_WriteBlocks_DMA((uint32_t *)buf, blk_addr, blk_len);
+
+    /* Wait for Tx Transfer completion */
+    while (writestatus == 0)
+    {
+    }
+    writestatus = 0;
+
+    /* Wait until SD card is ready to use for new operation */
+    while (BSP_SD_GetCardState() != SD_TRANSFER_OK)
+    {
+      if (timeout-- == 0)
+      {
+        return ret;
+      }
+    }
+
+    ret = 0;
+  }
+  return ret;
 }
 
 /**
@@ -185,7 +222,25 @@ int8_t STORAGE_Write(uint8_t lun, uint8_t *buf,
   */
 int8_t STORAGE_GetMaxLun(void)
 {
-  return (STORAGE_LUN_NBR - 1);
+  return(STORAGE_LUN_NBR - 1);
 }
 
+/**
+  * @brief BSP Tx Transfer completed callbacks
+  * @param None
+  * @retval None
+  */
+void BSP_SD_WriteCpltCallback(void)
+{
+  writestatus = 1;
+}
 
+/**
+  * @brief BSP Rx Transfer completed callbacks
+  * @param None
+  * @retval None
+  */
+void BSP_SD_ReadCpltCallback(void)
+{
+  readstatus = 1;
+}
