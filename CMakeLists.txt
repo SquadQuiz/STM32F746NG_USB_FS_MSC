@@ -52,6 +52,7 @@ set(sources_SRCS
     
     # BSP Drivers
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c
+    ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sd.c
 	
     # Startup
     ${PROJ_PATH}/Core/Startup/startup_stm32f746nghx.s
