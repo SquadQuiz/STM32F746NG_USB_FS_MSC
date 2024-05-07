@@ -50,9 +50,12 @@ set(sources_SRCS
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sd.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.c
 
     ## LL Drivers
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_sdmmc.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_usb.c
     
     # BSP Drivers
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c
