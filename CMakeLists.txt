@@ -160,6 +160,7 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 	USE_HAL_DRIVER
 	STM32F746xx
 	USE_STM32746G_DISCO
+  USE_USB_FS
 
 	$<$<CONFIG:Debug>:DEBUG>
 	$<$<COMPILE_LANGUAGE:C>: ${symbols_c_SYMB}>
