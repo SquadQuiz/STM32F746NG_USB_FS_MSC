@@ -53,7 +53,21 @@ set(sources_SRCS
     # BSP Drivers
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sd.c
-	
+    
+    # Middlewares
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_bot.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_data.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+  
+    # Application
+    ${PROJ_PATH}/Application/USBMSC/Src/usbd_conf.c
+    ${PROJ_PATH}/Application/USBMSC/Src/usbd_desc.c
+    ${PROJ_PATH}/Application/USBMSC/Src/usbd_msc_storage.c
+
     # Startup
     ${PROJ_PATH}/Core/Startup/startup_stm32f746nghx.s
 )
@@ -62,11 +76,19 @@ set(sources_SRCS
 set(include_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
     ${PROJ_PATH}/Core/Inc
+    # Drivers
     ${PROJ_PATH}/Drivers/CMSIS/Include
     ${PROJ_PATH}/Drivers/CMSIS/Device/ST/STM32F7xx/Include
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy
+    # BSP
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/
+    # Middlewares
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Inc
+    # Application
+    ${PROJ_PATH}/Application/USBMSC/Inc
+
 )
 
 # Include directories for each compiler
