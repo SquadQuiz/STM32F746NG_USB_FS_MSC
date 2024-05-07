@@ -23,6 +23,7 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+USBD_HandleTypeDef USBD_Device;
 
 /* Private function prototypes -----------------------------------------------*/
 static void MPU_Config(void);
@@ -59,10 +60,22 @@ int main(void)
   /* Configure LED1 */
   BSP_LED_Init(LED1);
 
+  /* Init Device Library */
+  USBD_Init(&USBD_Device, &MSC_Desc, DEVICE_FS);
+  
+  /* Add Supported Class */
+  USBD_RegisterClass(&USBD_Device, USBD_MSC_CLASS);
+  
+  /* Add Storage callbacks for MSC Class */
+  USBD_MSC_RegisterStorage(&USBD_Device, &USBD_DISK_fops);
+  
+  /* Start Device Process */
+  USBD_Start(&USBD_Device);
+
   /* Loop forever */
   for ( ;; ) 
   {
-    Error_Handler();
+    // do something ..
   }
 
   /* end of main function */
