@@ -27,7 +27,6 @@
 /* Private function prototypes -----------------------------------------------*/
 static void MPU_Config(void);
 static void SystemClock_Config(void);
-static void Error_Handler(void);
 static void CPU_CACHE_Enable(void);
 
 /* Private functions ---------------------------------------------------------*/
@@ -63,12 +62,10 @@ int main(void)
   /* Loop forever */
   for ( ;; ) 
   {
-    BSP_LED_On(LED1);
-    HAL_Delay(500);
-    BSP_LED_Off(LED1);
-    HAL_Delay(500);
+    Error_Handler();
   }
 
+  /* end of main function */
 }
 
 /**
@@ -132,22 +129,6 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @param  None
-  * @retval None
-  */
-static void Error_Handler(void)
-{
-  /* User may add here some code to deal with this error */
-  BSP_LED_On(LED1);
-  while(1)
-  {
-    BSP_LED_Toggle(LED1);
-    HAL_Delay(200);
-  }
-}
-
-/**
   * @brief  CPU L1-Cache enable.
   * @param  None
   * @retval None
@@ -160,7 +141,6 @@ static void CPU_CACHE_Enable(void)
   /* Enable D-Cache */
   SCB_EnableDCache();
 }
-
 
 /**
   * @brief  Configure the MPU attributes
@@ -192,6 +172,24 @@ static void MPU_Config(void)
   /* Enable the MPU */
   HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
 }
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @param  None
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* User can add his own implementation to report the HAL error return state */
+  BSP_LED_On(LED1);
+  // __disable_irq();
+  while(1)
+  {
+    BSP_LED_Toggle(LED1);
+    HAL_Delay(100);
+  }
+}
+
 
 #ifdef  USE_FULL_ASSERT
 /**
