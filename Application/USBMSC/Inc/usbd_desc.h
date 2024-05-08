@@ -1,55 +1,39 @@
 /**
   ******************************************************************************
-  * @file    stm32f7xx_it.h
-  * @brief   This file contains the headers of the interrupt handlers.
+  * @file    usbd_desc.h
+  * @author  MCD Application Team
+  * @brief   Header for usbd_desc.c module
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2015 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
- ******************************************************************************
+  ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef INC_STM32F7xx_IT_H
-#define INC_STM32F7xx_IT_H
-
-#ifdef __cplusplus
-  extern "C" {
-#endif
+#ifndef __USBD_DESC_H
+#define __USBD_DESC_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include "usbd_def.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
+#define         DEVICE_ID1          (0x1FFF7A10)
+#define         DEVICE_ID2          (0x1FFF7A14)
+#define         DEVICE_ID3          (0x1FFF7A18)
+
+#define  USB_SIZ_STRING_SERIAL       0x1A
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void NMI_Handler(void);
-void HardFault_Handler(void);
-void MemManage_Handler(void);
-void BusFault_Handler(void);
-void UsageFault_Handler(void);
-void SVC_Handler(void);
-void DebugMon_Handler(void);
-void PendSV_Handler(void);
-void SysTick_Handler(void);
-#ifdef USE_USB_FS
-void OTG_FS_IRQHandler(void);
-#else
-void OTG_HS_IRQHandler(void);
-#endif
-void BSP_SDMMC_IRQHandler(void);
-void BSP_SDMMC_DMA_Tx_IRQHandler(void);
-void BSP_SDMMC_DMA_Rx_IRQHandler(void);
+extern USBD_DescriptorsTypeDef MSC_Desc; /* Replace 'XXX_Desc' with your active USB device class, ex: HID_Desc */
 
-#ifdef __cplusplus
-}
-#endif
+#endif /* __USBD_DESC_TEMPLATE_H*/
 
-#endif /* INC_STM32F7xx_IT_H */

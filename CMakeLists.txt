@@ -33,40 +33,66 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Src/system_stm32f7xx.c
     
     # HAL Driver
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sd.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_usart.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
+
+    ## LL Drivers
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_sdmmc.c
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_usb.c
     
     # BSP Drivers
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.c
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_sd.c
-	
+    
+    # Middlewares
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_bot.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_data.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc_scsi.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Src/usbd_msc.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c
+  
+    # Application
+    ${PROJ_PATH}/Application/USBMSC/Src/usbd_conf.c
+    ${PROJ_PATH}/Application/USBMSC/Src/usbd_desc.c
+    ${PROJ_PATH}/Application/USBMSC/Src/usbd_msc_storage.c
+
     # Startup
-    ${PROJ_PATH}/Core/Startup/startup_stm32f746nghx.s
+    ${PROJ_PATH}/Core/Startup/startup_stm32f746xx.s
 )
 
 # Include directories for all compilers
 set(include_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
     ${PROJ_PATH}/Core/Inc
+    # Drivers
     ${PROJ_PATH}/Drivers/CMSIS/Include
     ${PROJ_PATH}/Drivers/CMSIS/Device/ST/STM32F7xx/Include
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy
+    # BSP
     ${PROJ_PATH}/Drivers/BSP/STM32746G-Discovery/
+    # Middlewares
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc
+    ${PROJ_PATH}/Middlewares/ST/STM32_USB_Device_Library/Core/Inc
+    # Application
+    ${PROJ_PATH}/Application/USBMSC/Inc
+
 )
 
 # Include directories for each compiler
@@ -131,6 +157,7 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 	USE_HAL_DRIVER
 	STM32F746xx
 	USE_STM32746G_DISCO
+  USE_USB_FS
 
 	$<$<CONFIG:Debug>:DEBUG>
 	$<$<COMPILE_LANGUAGE:C>: ${symbols_c_SYMB}>
