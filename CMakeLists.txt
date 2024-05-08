@@ -73,7 +73,7 @@ set(sources_SRCS
     ${PROJ_PATH}/Application/USBMSC/Src/usbd_msc_storage.c
 
     # Startup
-    ${PROJ_PATH}/Core/Startup/startup_stm32f746nghx.s
+    ${PROJ_PATH}/Core/Startup/startup_stm32f746xx.s
 )
 
 # Include directories for all compilers
