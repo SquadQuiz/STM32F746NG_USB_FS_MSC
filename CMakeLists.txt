@@ -35,7 +35,6 @@ set(sources_SRCS
     # HAL Driver
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c
-    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c
     ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c
