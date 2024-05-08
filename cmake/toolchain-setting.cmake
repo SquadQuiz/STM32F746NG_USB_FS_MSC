@@ -84,7 +84,7 @@ set(compiler_OPTS ${compiler_OPTS}
 
     # Miscellaneous
     -fstack-usage             # Enable stack usage analysis
-    -fcyclomatic-complexity   # Cyclomatic Complexity
+    # -fcyclomatic-complexity   # Cyclomatic Complexity
     # -v                        # Verbose
     
     $<$<COMPILE_LANGUAGE:ASM>:
